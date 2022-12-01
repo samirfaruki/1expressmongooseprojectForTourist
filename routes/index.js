@@ -12,5 +12,6 @@ router.delete("/blogs/:id", userController.delete);
 router.patch("/blogs/:id", userController.patch);
 router.get("/blogs/:id", userController.getOne);
 router.get("/average", userController.Average);
+router.get("/monthlyPlan/:year", userController.monthlyplan);
 
 module.exports = router;

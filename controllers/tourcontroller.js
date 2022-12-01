@@ -134,3 +134,44 @@ exports.Average = async (req, res) => {
     });
   }
 };
+
+exports.monthlyplan = async (req, res) => {
+  try {
+    const year = req.params.year * 1;
+    const topTen = await Natours.aggregate([
+      { $unwind: `$startDates` },
+      {
+        $match: {
+          startDates: {
+            $gte: new Date(`${year}-01-01`),
+            $lte: new Date(`${year}-12-31`),
+          },
+        },
+      },
+      {
+        $group: {
+          _id: { $month: "$startDates" },
+          numOfMonth: { $sum: 1 },
+          tours: { $push: `$name` },
+        },
+      },
+      {
+        $sort: { numOfMonth: -1 },
+      },
+      { $limit: 10 },
+    ]);
+    res.status(200).json({
+      status: "success",
+      results: topTen.length,
+      monthlypanes: {
+        topTen,
+      },
+    });
+  } catch (err) {
+    console.log(err),
+      res.status(404).json({
+        status: "fail",
+        message: err,
+      });
+  }
+};
