@@ -106,12 +106,13 @@ exports.Average = async (req, res) => {
       { $match: { ratingsAverage: { $gte: 4.5 } } },
       {
         $group: {
-          _id: null,
+          _id: { $toUpper: "$difficulty" },
+          tourSum: { $sum: 1 },
 
           averageprice: { $avg: `$price` },
           maxprice: { $max: `$price` },
           minprice: { $min: `$price` },
-          averageprice: { $avg: `$ratingsAverage` },
+          averagrating: { $avg: `$ratingsAverage` },
           maxratingsAverage: { $max: `$ratingsAverage` },
           minratingsAverage: { $min: `$ratingsAverage` },
         },
