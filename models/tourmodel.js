@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const Natours = mongoose.Schema;
 
-const natoursSchema = new Natours([
+const natoursSchema = new Natours(
   {
     name: { type: String, required: true },
   },
@@ -37,6 +37,13 @@ const natoursSchema = new Natours([
   {
     startDates: { type: [Date] },
   },
-]);
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
+);
+natoursSchema.virtual("weeks").get(function () {
+  return this.duration / 7;
+});
 
 module.exports = mongoose.model("Natours", natoursSchema);
