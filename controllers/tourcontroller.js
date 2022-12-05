@@ -67,6 +67,7 @@ exports.createPost = async (req, res) => {
   thing
     .save()
     .then(() => {
+      console.log(thing);
       res.status(201).send("Post saved successfully!");
     })
     .catch((error) => {
