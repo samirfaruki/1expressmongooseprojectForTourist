@@ -1,17 +1,22 @@
 var express = require("express");
-const userController = require("../controllers/tourcontroller");
+const tourController = require("../controllers/tourcontroller");
+const authController = require("../controllers/authcontroller");
 var router = express.Router();
 
 // router
 //   .route("/top-5-cheap")
-//   .get(userController.aliasTopTours, userController.getAllTours);
-router.get("/getall", userController.getAllTours);
-router.post("/create", userController.createPost);
+//   .get(tourController.aliasTopTours, tourController.getAllTours);
+router.get("/getall", tourController.getAllTours);
+router.post("/create", tourController.createPost);
 
-router.delete("/blogs/:id", userController.delete);
-router.patch("/blogs/:id", userController.patch);
-router.get("/blogs/:id", userController.getOne);
-router.get("/average", userController.Average);
-router.get("/monthlyPlan/:year", userController.monthlyplan);
+router.delete("/blogs/:id", tourController.delete);
+router.patch("/blogs/:id", tourController.patch);
+router.get("/blogs/:id", tourController.getOne);
+router.get("/average", tourController.Average);
+router.get("/monthlyPlan/:year", tourController.monthlyplan);
+
+// user routes started from here
+router.post("/signUp", authController.signupUser);
+router.get("/getallUsers", authController.getAllUsers);
 
 module.exports = router;
