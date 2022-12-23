@@ -30,7 +30,7 @@ exports.getAllUsers = async (req, res) => {
 
 // ???????????????
 exports.signupUser = async (req, res) => {
-  console.log(req.body.title);
+  // console.log(req.body.title);
   const thing = new Users({
     name: req.body.name,
     email: req.body.email,
@@ -42,10 +42,13 @@ exports.signupUser = async (req, res) => {
   thing
     .save()
     .then(() => {
-      console.log(thing);
       res.status(201).send("Post saved successfully!");
     })
     .catch((error) => {
-      res.status(400).send(error);
+      if (error.code == 11000) {
+        res.send("Duplicate Email");
+      } else {
+        res.send("Error");
+      }
     });
 };

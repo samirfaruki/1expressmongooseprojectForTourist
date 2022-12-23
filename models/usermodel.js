@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 // const slugify = require("slugify");
-// const validator = require("validators");
+const validator = require("validator");
 
 const usersSchema = new mongoose.Schema({
   name: {
@@ -18,7 +18,17 @@ const usersSchema = new mongoose.Schema({
   },
   confirmPassword: {
     type: String,
+    type: String,
+    required: [true, "Please confirm your password"],
+    validate: {
+      // This only works on CREATE and SAVE!!!
+      validator: function (el) {
+        return el === this.password;
+      },
+      message: "Passwords are not the same!",
+    },
   },
+
   profilePic: {
     type: String,
   },
