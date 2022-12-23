@@ -1,4 +1,5 @@
 const Users = require("../models/usermodel");
+const bcrypt = require("bcryptjs");
 
 const APIFeatures = require("./../utils/apiFeatures");
 
@@ -42,7 +43,7 @@ exports.signupUser = async (req, res) => {
   thing
     .save()
     .then(() => {
-      res.status(201).send("Post saved successfully!");
+      res.status(201).send(thing);
     })
     .catch((error) => {
       if (error.code == 11000) {

@@ -1,6 +1,7 @@
+const crypto = require("crypto");
 const mongoose = require("mongoose");
-// const slugify = require("slugify");
 const validator = require("validator");
+const bcrypt = require("bcryptjs");
 
 const usersSchema = new mongoose.Schema({
   name: {
@@ -32,6 +33,17 @@ const usersSchema = new mongoose.Schema({
   profilePic: {
     type: String,
   },
+});
+usersSchema.pre("save", async function (next) {
+  // Only run this function if password was actually modified
+  if (!this.isModified("password")) return next();
+
+  // Hash the password with cost of 12
+  this.password = await bcrypt.hash(this.password, 12);
+
+  // Delete passwordConfirm field
+  this.passwordConfirm = undefined;
+  next();
 });
 
 module.exports = mongoose.model("Users", usersSchema);
